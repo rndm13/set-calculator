@@ -98,6 +98,11 @@ int string_type(string s)
 }
 int main()
 {
+    map<char,int> operation_priority_lookup;
+    operation_priority_lookup['o']=0;
+    operation_priority_lookup['/']=1;
+    operation_priority_lookup['u']=2;
+    operation_priority_lookup['n']=3;
     string expression;
     cin >> expression;
     regex regex_filter(R"abc(([A-Z]+)|([un\/ox])|(\(|\)))abc"); 
@@ -131,7 +136,7 @@ int main()
                 exit(1);
             }
         else if (string_type(filter[i])==2)
-            operation_order.push({prior_stack,i});
+            operation_order.push({operation_priority_lookup[filter[i][0]]+prior_stack,i});
 
         else if (string_type(filter[i])==1 && name_set_lookup.find(filter[i]) == name_set_lookup.end()) {
             set<string> new_set;

@@ -1,6 +1,6 @@
-#Set calculator
+# Set calculator
 
-##Quick start
+## Quick start
 ```console
 $ g++ -std=c++17 main.cpp -o set-calc
 $ set-calc
@@ -10,12 +10,12 @@ $ set-calc
   size_B:2
   set_B:a b 
 ```
-#Usage
+# Usage
 
-##Functions
+## Functions
 - u = Union
 - n = Intersection
 - / = Difference
 - o = Symmetric Difference
-##Set names must be uppercase only
+## Set names must be uppercase only
 
