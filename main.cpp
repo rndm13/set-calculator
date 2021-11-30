@@ -87,6 +87,28 @@ namespace set_io {
             cout << a << end;
     }
 }
+bool comparator_result(string a,string b)
+{
+    int an,bn;
+    bool ab,bb;
+    if (isdigit(a[0]))
+    {
+        an=stoi(a);
+        ab=1;
+    }
+    if (isdigit(b[0]))
+    {
+        bn=stoi(b);
+        bb=1;
+    }
+    if (ab && bb)
+        return an < bn;
+    if (ab)
+        return 0;
+    if (bb)
+        return 1;
+    return a<b;
+}
 int string_type(string s)
 {
     if (s.size()>1 || (s[0]>='A' && s[0]<='Z'))
@@ -96,15 +118,21 @@ int string_type(string s)
     else
         return 2;
 }
-int main()
+int main(int argc,char *argv[])
 {
+    bool sort_result=0;
+    for (int i = 1;i<argc;i++)
+    {
+        if (strcmp(argv[i],"-s") ||strcmp(argv[i],"--sort"))
+            sort_result=1;
+    }
     map<char,int> operation_priority_lookup;
     operation_priority_lookup['o']=0;
     operation_priority_lookup['/']=1;
     operation_priority_lookup['u']=2;
     operation_priority_lookup['n']=3;
     string expression;
-    cin >> expression;
+    getline(cin,expression);
     regex regex_filter(R"abc(([A-Z]+)|([un\/ox])|(\(|\)))abc"); 
     //TODO: make operation list autogenerate from map of operations
     vector <string> filter {
@@ -124,7 +152,6 @@ int main()
     int prior_stack = 0;
     for (size_t i = 0;i<filter.size();i++)
     {
-        //cout << "PROCESSING "<<filter[i]<<'\n';
         if (filter[i]=="(")
             prior_stack+=9;
         else if (filter[i]==")")
@@ -147,6 +174,11 @@ int main()
             set_io::insert(new_set,size_set);
             name_set_lookup[filter[i]]=new_set;
         }
+    }
+    if (prior_stack)
+    {
+        cerr << "NOT BALANCED BRACKETS\n";
+        exit(1);
     }
     vector<pair<size_t,size_t>> index_deletions;
     while (!operation_order.empty())
@@ -186,7 +218,13 @@ int main()
             break;
         }
     }
+    vector<string> result;
+    for (auto x : name_set_lookup[filter[0]])
+        result.push_back(x);
+    if (sort_result)
+        sort(result.begin(),result.end(),comparator_result);
     cout << filter[0]<<" = {";
-    set_io::print(name_set_lookup[filter[0]]," ");
+    for (size_t i = 0;i<result.size();i++)
+        cout << result[i]<<' ';
     cout <<"}\n";
 }
