@@ -17,6 +17,8 @@ $ ./set-calc
 - n = Intersection
 - / = Difference
 - o = Symmetric Difference
+- ~ = Complement    - only right argument, right argument can't be another complement
 ## Set names must be uppercase only
 ## Options
 - -s --sort = sort the output accordingly
+- -i --info = print info about what the program is doing
